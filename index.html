@@ -1,1 +1,169 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Movie Review & Rating Platform</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      text-align: center;
+      padding: 30px;
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px #f1c40f;
+    }
+    .banner-img {
+      width: 300px;
+      margin: 20px auto;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .container {
+      background: #ffffffcc;
+      padding: 25px;
+      border-radius: 12px;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border: 2px solid #8e44ad;
+    }
+    input, textarea, select, button {
+      margin: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 80%;
+      font-size: 14px;
+    }
+    button {
+      background-color: #27ae60;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      border: none;
+    }
+    button:hover {
+      background-color: #219150;
+      transform: scale(1.05);
+    }
+    label {
+      font-weight: bold;
+      color: #34495e;
+    }
+    .reviews {
+      margin-top: 30px;
+      text-align: left;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 2px solid #3498db;
+    }
+    .review-item {
+      border-bottom: 2px dashed #ddd;
+      padding: 15px 0;
+      background: linear-gradient(to right, #fdfbfb, #ebedee);
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+    .decor-img {
+      width: 200px;
+      margin: 15px;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <h1>🎬 Movie Review & Rating Platform</h1>
+
+  <!-- Banner Image  -->
+  <img src="https://share.google/VxtTzO4uHzXJV4s2Y" alt="Cinema Clapperboard" class="banner-img">
+
+  <div class="container">
+    <form id="movieForm" onsubmit="return handleSubmit(event)">
+      <label for="userName">User Name:</label><br>
+      <input type="text" id="userName" placeholder="Enter your name" required><br>
+
+      <label for="movieName">Movie Name:</label><br>
+      <input type="text" id="movieName" placeholder="Enter movie name" required><br>
+      
+      <label for="rating">Rating:</label><br>
+      <select id="rating" required>
+        <option value="">Select rating</option>
+        <option>⭐</option>
+        <option>⭐⭐</option>
+        <option>⭐⭐⭐</option>
+        <option>⭐⭐⭐⭐</option>
+        <option>⭐⭐⭐⭐⭐</option>
+      </select><br>
+      
+      <label for="review">Your Review:</label><br>
+      <textarea id="review" placeholder="Write your review..." rows="4" required></textarea><br>
+      
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <!-- Display stored reviews -->
+  <div class="reviews" id="reviewsList">
+    <h2>📖 Stored Reviews</h2>
+    <div id="reviewsContent"></div>
+
+    <!-- Decorative Images -->
+    <img src="C:\Users\acer\Downloads\MRandRP.jpg" alt="Audience Watching Movie" class="decor-img">
+    <img src="i:turn0image1" alt="Movie Poster Collage" class="decor-img">
+    <img src="i:turn0image13" alt="Film Reel Background" class="decor-img">
+    <img src="i:turn0image10" alt="Popcorn Cinema Illustration" class="decor-img">
+  </div>
+
+  <script>
+    function handleSubmit(event) {
+      event.preventDefault();
+
+      let user = document.getElementById("userName").value;
+      let movie = document.getElementById("movieName").value;
+      let rating = document.getElementById("rating").value;
+      let review = document.getElementById("review").value;
+
+      let reviewData = {
+        user: user,
+        movie: movie,
+        rating: rating,
+        review: review
+      };
+
+      let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+      reviews.push(reviewData);
+      localStorage.setItem("reviews", JSON.stringify(reviews));
+
+      document.getElementById("movieForm").reset();
+      displayReviews();
+    }
+
+    function displayReviews() {
+      let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+      let content = "";
+      reviews.forEach((r) => {
+        content += `
+          <div class="review-item">
+            <strong>User: ${r.user}</strong><br>
+            Movie: ${r.movie}<br>
+            Rating: ${r.rating}<br>
+            Review: ${r.review}
+          </div>
+        `;
+      });
+      document.getElementById("reviewsContent").innerHTML = content || "<p>No reviews yet.</p>";
+    }
+
+    window.onload = displayReviews;
+  </script>
+</body>
+</html>
